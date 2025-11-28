@@ -1,5 +1,7 @@
 Taskly: CLI TODO App
 
+He usado una arquitectura sencilla en capas: una capa de interfaz de línea de comandos (CLI) basada en argparse con un handler por comando (cmd_add, cmd_update, etc.), y una capa de dominio formada por funciones puras que gestionan las tareas (add_task, update_task, list_tasks, etc.). La capa CLI se encarga solo de interpretar los argumentos y mostrar mensajes al usuario, mientras que la lógica de negocio y el acceso al archivo JSON están encapsulados en las funciones de dominio. Esto mantiene el código más limpio, testeable y fácil de extender, sin añadir complejidad innecesaria para una aplicación pequeña.
+
 📖 Description
 Taskly is a lightweight command-line interface (CLI) application for efficient task management.
 Built as the final project for CS50P, it allows you to add, update, delete, list, and track tasks directly from your terminal.
