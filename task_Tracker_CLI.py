@@ -68,7 +68,29 @@ def cmd_add(args: argparse.Namespace):
 def cmd_update(args: argparse.Namespace):
     """Handler para: task-cli update ID DESCRIPTION"""
     print("-----------------------------------------")
-    print(f"We are update the task with id={args.id} to:", args.description)
+
+    # 0) Validar que la nueva descripción no esté vacía (ni solo espacios)
+    new_description = args.description.strip()
+    if not new_description:
+        print("Error: task description cannot be empty.")
+        return
+
+    # 1) Cargar estado actual de tareas desde el JSON
+    data = load_tasks()
+
+    # 2) Intentar actualizar la tarea en la capa de dominio
+    updated_task = update_task(data, args.id, new_description)
+
+    if updated_task is None:
+        # No existe una tarea con ese id
+        print(f"Error: task with ID {args.id} not found.")
+        return
+
+    # 3) Guardar cambios en disco
+    save_tasks(data)
+
+    # 4) Mostrar la tarea actualizada
+    print_task_table(updated_task)
 
 
 def cmd_delete(args: argparse.Namespace):
@@ -170,14 +192,24 @@ def add_task(data: dict, description: str) -> dict:
     return task
 
 
-def update_task(data: dict, task_id: int, new_description: str) -> bool:
+def update_task(data: dict, task_id: int, new_description: str) -> dict | None:
     """
     Actualiza la descripción de la tarea con id == task_id.
     - Busca la tarea en data['tasks'].
     - Si la encuentra, cambia su description y updatedAt.
-    - Devuelve True si la tarea existía y se actualizó, False si no se encontró.
+    - Devuelve la tarea actualizada (dict) si existe.
+    - Devuelve None si no se encontró ninguna tarea con ese id.
     """
-    pass
+    tasks = data.get("tasks", [])
+
+    for task in tasks:
+        if task.get("id") == task_id:
+            task["description"] = new_description
+            task["updatedAt"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            return task
+
+    # No se ha encontrado ninguna tarea con ese id
+    return None
 
 
 def delete_task(data: dict, task_id: int) -> bool:
