@@ -3,7 +3,7 @@
 > Pequeña aplicación de línea de comandos para gestionar tareas, basada en el proyecto de roadmap.sh: [Task Tracker](https://roadmap.sh/projects/task-tracker).
 
 Task Tracker CLI es una aplicación ligera en Python que te permite gestionar tus tareas directamente desde la terminal.  
-Actualmente permite **añadir** y **actualizar** tareas guardándolas en un archivo `tasks.json` en el directorio actual.  
+Actualmente permite `add` y `update` tareas guardándolas en un archivo `tasks.json` en el directorio actual.  
 El resto de comandos (`delete`, `mark-in-progress`, `mark-done`, `list`) están definidos a nivel de CLI, pero su lógica interna todavía está en desarrollo.
 
 ---
@@ -69,3 +69,6 @@ Las tareas se guardan en un archivo `tasks.json` en el directorio actual, con un
     }
   ]
 }
+
+## 📜 License
+This project is licensed under the MIT License. You are free to use, modify, and distribute it.

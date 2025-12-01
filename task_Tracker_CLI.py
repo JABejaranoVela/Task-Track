@@ -95,8 +95,24 @@ def cmd_update(args: argparse.Namespace):
 
 def cmd_delete(args: argparse.Namespace):
     """Handler para: task-cli delete ID"""
-    print("-----------------------------------------")
-    print(f"We are delete the task with id={args.id}")
+
+    # 1) Cargar estado actual de tareas desde el JSON
+    data = load_tasks()
+
+    # 2) Intentar eliminar la tarea en la capa de dominio
+    deleted_task = delete_task(data, args.id)
+
+    if deleted_task is None:
+        # No existe una tarea con ese id
+        print(f"Error: task with ID {args.id} not found.")
+        return
+
+    # 3) Guardar cambios en disco
+    save_tasks(data)
+
+    # 4) Mostrar la tarea eliminada (aunque ya no esté en el archivo)
+    print("Task deleted:")
+    print_task_table(deleted_task)
 
 
 def cmd_mark_in_progress(args: argparse.Namespace):
@@ -212,13 +228,24 @@ def update_task(data: dict, task_id: int, new_description: str) -> dict | None:
     return None
 
 
-def delete_task(data: dict, task_id: int) -> bool:
+def delete_task(data: dict, task_id: int) -> dict | None:
     """
     Elimina la tarea con id == task_id de data['tasks'].
-    - Si la encuentra y la elimina, devuelve True.
-    - Si no existe ninguna tarea con ese id, devuelve False.
+    - Si la encuentra y la elimina, devuelve la tarea eliminada (dict).
+    - Si no existe ninguna tarea con ese id, devuelve None.
     """
-    pass
+    tasks = data.get("tasks", [])
+
+    for index, task in enumerate(tasks):
+        if task.get("id") == task_id:
+            # Guardamos la tarea que vamos a eliminar
+            deleted_task = tasks.pop(index)
+            # Por claridad, reasignamos la lista a data (aunque es la misma referencia)
+            data["tasks"] = tasks
+            return deleted_task
+
+    # No se ha encontrado ninguna tarea con ese id
+    return None
 
 
 def set_task_status(data: dict, task_id: int, new_status: str) -> bool:

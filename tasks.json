@@ -16,39 +16,11 @@
       "updatedAt": "2025-11-28T15:56:50"
     },
     {
-      "id": 3,
-      "description": "",
-      "status": "todo",
-      "createdAt": "2025-11-28T16:03:52",
-      "updatedAt": "2025-11-28T16:03:52"
-    },
-    {
-      "id": 4,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:14:01",
-      "updatedAt": "28/11/2025 16:14:01"
-    },
-    {
       "id": 5,
       "description": "Hola a todos",
       "status": "todo",
       "createdAt": "28/11/2025 16:14:07",
       "updatedAt": "28/11/2025 16:14:07"
-    },
-    {
-      "id": 6,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:14:32",
-      "updatedAt": "28/11/2025 16:14:32"
-    },
-    {
-      "id": 7,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:15:13",
-      "updatedAt": "28/11/2025 16:15:13"
     },
     {
       "id": 8,
