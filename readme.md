@@ -1,49 +1,71 @@
-Taskly: CLI TODO App
+# Task Tracker CLI
 
-He usado una arquitectura sencilla en capas: una capa de interfaz de línea de comandos (CLI) basada en argparse con un handler por comando (cmd_add, cmd_update, etc.), y una capa de dominio formada por funciones puras que gestionan las tareas (add_task, update_task, list_tasks, etc.). La capa CLI se encarga solo de interpretar los argumentos y mostrar mensajes al usuario, mientras que la lógica de negocio y el acceso al archivo JSON están encapsulados en las funciones de dominio. Esto mantiene el código más limpio, testeable y fácil de extender, sin añadir complejidad innecesaria para una aplicación pequeña.
+> Pequeña aplicación de línea de comandos para gestionar tareas, basada en el proyecto de roadmap.sh: [Task Tracker](https://roadmap.sh/projects/task-tracker).
 
-📖 Description
-Taskly is a lightweight command-line interface (CLI) application for efficient task management.
-Built as the final project for CS50P, it allows you to add, update, delete, list, and track tasks directly from your terminal.
+Task Tracker CLI es una aplicación ligera en Python que te permite gestionar tus tareas directamente desde la terminal.  
+Actualmente permite **añadir** y **actualizar** tareas guardándolas en un archivo `tasks.json` en el directorio actual.  
+El resto de comandos (`delete`, `mark-in-progress`, `mark-done`, `list`) están definidos a nivel de CLI, pero su lógica interna todavía está en desarrollo.
 
-✨ Features
-Add a Task → Create tasks with descriptions. Each task gets a unique ID and a default todo status.
-Update a Task → Modify the description or status of a task.
-Mark as In-Progress → Quickly change a task’s status to in-progress.
-Mark as Done → Quickly change a task’s status to done.
-Delete a Task → Remove tasks by their ID.
-List Tasks → Display all tasks or filter them by:
-status: todo, in-progress, done, or all
-date: filter by creation date with operators <, >, =
-🗂 Project Structure
-taskly.py → Core CLI implementation
+---
 
-main() → Entry point, parses CLI arguments and runs commands.
-load_database(path) → Loads tasks from a JSON file.
-save_database(database, path) → Saves tasks to JSON.
-add_task(database, description) → Adds a new task.
-update_task(database, id, description?, status?) → Updates description or status.
-mark_in_progress_task(database, id) → Marks a task as in-progress.
-mark_done_task(database, id) → Marks a task as done.
-delete_task(database, id) → Deletes a task.
-list_task(database, status?, date?) → Lists tasks with optional filters.
-test_taskly.py → Unit tests for all features using pytest.
+## ✨ Características (estado actual)
 
-pyproject.toml → Project metadata, dependencies, and packaging config.
+Implementado:
 
-⚡ Installation
-You can install Taskly directly from GitHub:
+- ✅ **Añadir tarea**  
+  - `task-cli add DESCRIPTION`  
+  - Crea una nueva tarea con:
+    - `id` incremental
+    - `description`
+    - `status = "todo"`
+    - `createdAt` y `updatedAt` con fecha/hora actual
+  - Muestra la tarea creada en una tabla formateada en la terminal.
 
-pip install git+https://github.com/brkahmed/taskly.git
-🚀 Usage
-$ taskly add [-h] description
+- ✅ **Actualizar tarea**  
+  - `task-cli update ID DESCRIPTION`  
+  - Cambia la descripción de una tarea existente e actualiza `updatedAt`.
+  - Si el `ID` no existe, muestra un mensaje de error.
 
-$ taskly update [-h] [-d description] [-s {done,in-progress,todo}] id
+Definido pero **aún no implementado en la capa de dominio**:
 
-$ taskly mark-done [-h] id
+- ⏳ **Eliminar tarea**  
+  - `task-cli delete ID`
 
-$ taskly mark-in-progress [-h] id
+- ⏳ **Marcar tarea como in-progress**  
+  - `task-cli mark-in-progress ID`
 
-$ taskly delete [-h] id
+- ⏳ **Marcar tarea como done**  
+  - `task-cli mark-done ID`
 
-$ taskly list [-h] [-s {done,in-progress,todo,all}] [-d DATE]
+- ⏳ **Listar tareas**  
+  - `task-cli list [status]`  
+  - `status` será una de: `todo`, `in-progress`, `done`, `all`
+
+> ⚠️ Nota: De momento, los comandos que no son `add` o `update` solo muestran mensajes de prueba y **no modifican** el archivo `tasks.json`.
+
+---
+
+## 🧠 Modelo de datos
+
+Las tareas se guardan en un archivo `tasks.json` en el directorio actual, con una estructura similar a:
+
+```json
+{
+  "last_id": 3,
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Buy groceries",
+      "status": "todo",
+      "createdAt": "28/11/2025 16:19:01",
+      "updatedAt": "28/11/2025 16:19:01"
+    },
+    {
+      "id": 2,
+      "description": "Clean the house",
+      "status": "todo",
+      "createdAt": "28/11/2025 16:25:10",
+      "updatedAt": "28/11/2025 16:25:10"
+    }
+  ]
+}
