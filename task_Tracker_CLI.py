@@ -118,13 +118,45 @@ def cmd_delete(args: argparse.Namespace):
 def cmd_mark_in_progress(args: argparse.Namespace):
     """Handler para: task-cli mark-in-progress ID"""
     print("-----------------------------------------")
-    print(f"We are mark IN PROGRESS the task with id={args.id}")
+
+    # 1) Cargar estado actual de tareas desde el JSON
+    data = load_tasks()
+
+    # 2) Intentar cambiar el estado en la capa de dominio
+    updated_task = set_task_status(data, args.id, "in-progress")
+
+    if updated_task is None:
+        # No existe una tarea con ese id
+        print(f"Error: task with ID {args.id} not found.")
+        return
+
+    # 3) Guardar cambios en disco
+    save_tasks(data)
+
+    # 4) Mostrar la tarea actualizada
+    print_task_table(updated_task)
 
 
 def cmd_mark_done(args: argparse.Namespace):
     """Handler para: task-cli mark-done ID"""
     print("-----------------------------------------")
-    print(f"We are mark DONE the task with id={args.id}")
+
+    # 1) Cargar estado actual de tareas desde el JSON
+    data = load_tasks()
+
+    # 2) Intentar cambiar el estado en la capa de dominio
+    updated_task = set_task_status(data, args.id, "done")
+
+    if updated_task is None:
+        # No existe una tarea con ese id
+        print(f"Error: task with ID {args.id} not found.")
+        return
+
+    # 3) Guardar cambios en disco
+    save_tasks(data)
+
+    # 4) Mostrar la tarea actualizada
+    print_task_table(updated_task)
 
 
 def cmd_list(args: argparse.Namespace):
@@ -248,14 +280,23 @@ def delete_task(data: dict, task_id: int) -> dict | None:
     return None
 
 
-def set_task_status(data: dict, task_id: int, new_status: str) -> bool:
+def set_task_status(data: dict, task_id: int, new_status: str) -> dict | None:
     """
     Cambia el status de la tarea con id == task_id.
     - new_status será 'todo', 'in-progress' o 'done'.
-    - Si la tarea existe, actualiza su status y updatedAt, devuelve True.
-    - Si no existe, devuelve False.
+    - Si la tarea existe, actualiza su status y updatedAt y devuelve la tarea (dict).
+    - Si no existe, devuelve None.
     """
-    pass
+    tasks = data.get("tasks", [])
+
+    for task in tasks:
+        if task.get("id") == task_id:
+            task["status"] = new_status
+            task["updatedAt"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            return task
+
+    # No se ha encontrado ninguna tarea con ese id
+    return None
 
 
 def list_tasks_by_status(data: dict, status: str) -> list[dict]:

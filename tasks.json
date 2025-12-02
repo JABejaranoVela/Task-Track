@@ -4,16 +4,16 @@
     {
       "id": 1,
       "description": "Esto es una prueba",
-      "status": "todo",
+      "status": "in-progress",
       "createdAt": "2025-11-28T15:56:24",
-      "updatedAt": "01/12/2025 18:05:32"
+      "updatedAt": "02/12/2025 18:55:13"
     },
     {
       "id": 2,
       "description": "Cosas que pasan",
-      "status": "todo",
+      "status": "done",
       "createdAt": "2025-11-28T15:56:50",
-      "updatedAt": "2025-11-28T15:56:50"
+      "updatedAt": "02/12/2025 18:55:44"
     },
     {
       "id": 5,
@@ -38,16 +38,6 @@
       "status": "todo",
       "createdAt": "28/11/2025 16:33:54",
       "updatedAt": "28/11/2025 16:33:54"
-    },
-    {
-      "id": 10,
-      "description": [
-        "hola",
-        "bebe"
-      ],
-      "status": "todo",
-      "createdAt": "28/11/2025 16:34:03",
-      "updatedAt": "28/11/2025 16:34:03"
     },
     {
       "id": 11,
@@ -87,20 +77,6 @@
       "status": "todo",
       "createdAt": "28/11/2025 17:09:08",
       "updatedAt": "28/11/2025 17:09:08"
-    },
-    {
-      "id": 16,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "01/12/2025 17:55:24",
-      "updatedAt": "01/12/2025 17:55:24"
-    },
-    {
-      "id": 17,
-      "description": "Esto es una prueba",
-      "status": "todo",
-      "createdAt": "01/12/2025 17:55:40",
-      "updatedAt": "01/12/2025 17:55:40"
     }
   ]
 }

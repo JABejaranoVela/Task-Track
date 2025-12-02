@@ -69,6 +69,7 @@ Las tareas se guardan en un archivo `tasks.json` en el directorio actual, con un
     }
   ]
 }
+```
 
 ## 📜 License
 This project is licensed under the MIT License. You are free to use, modify, and distribute it.
