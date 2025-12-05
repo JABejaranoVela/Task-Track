@@ -9,7 +9,7 @@ Manual tests for the Task Tracker project.
 import json
 import os
 
-import task_Tracker_CLI as app  # importamos tu programa
+import task_tracker_cli.cli as app
 
 
 # Usaremos un archivo de tareas SOLO PARA TEST

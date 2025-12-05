@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "task-tracker-cli"
+version = "0.1.0"
+description = "A simple task tracker CLI that stores tasks in a local JSON file."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    { name = "Jose Antonio Bejarano Vela", email = "joseantoniobejarano@outlook.es" }
+]
+requires-python = ">=3.10"
+dependencies = []  # no external deps
+
+[project.urls]
+Homepage = "https://github.com/JABejaranoVela/Task-Track"
+
+[tool.setuptools.packages.find]
+include = ["task_tracker_cli"]
+
+[project.scripts]
+task-cli = "task_tracker_cli.cli:main"

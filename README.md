@@ -24,7 +24,7 @@ All data is stored locally in a JSON file.
 Clone the repo:
 
 ```bash
-git clone https://github.com/your-username/task-tracker-cli.git
+git clone https://github.com/JABejaranoVela/Task-Track
 cd task-tracker-cli
 ```
 
