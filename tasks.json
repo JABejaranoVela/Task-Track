@@ -1,20 +1,6 @@
 {
-  "last_id": 17,
+  "last_id": 18,
   "tasks": [
-    {
-      "id": 1,
-      "description": "Esto es una prueba",
-      "status": "in-progress",
-      "createdAt": "2025-11-28T15:56:24",
-      "updatedAt": "02/12/2025 18:55:13"
-    },
-    {
-      "id": 2,
-      "description": "Cosas que pasan",
-      "status": "done",
-      "createdAt": "2025-11-28T15:56:50",
-      "updatedAt": "02/12/2025 18:55:44"
-    },
     {
       "id": 5,
       "description": "Hola a todos",
@@ -28,34 +14,6 @@
       "status": "todo",
       "createdAt": "28/11/2025 16:19:01",
       "updatedAt": "28/11/2025 16:19:01"
-    },
-    {
-      "id": 9,
-      "description": [
-        "hola",
-        "bebe"
-      ],
-      "status": "todo",
-      "createdAt": "28/11/2025 16:33:54",
-      "updatedAt": "28/11/2025 16:33:54"
-    },
-    {
-      "id": 11,
-      "description": [
-        "sadasd"
-      ],
-      "status": "todo",
-      "createdAt": "28/11/2025 16:34:38",
-      "updatedAt": "28/11/2025 16:34:38"
-    },
-    {
-      "id": 12,
-      "description": [
-        "Hola a todos"
-      ],
-      "status": "todo",
-      "createdAt": "28/11/2025 16:34:48",
-      "updatedAt": "28/11/2025 16:34:48"
     },
     {
       "id": 13,
@@ -77,6 +35,13 @@
       "status": "todo",
       "createdAt": "28/11/2025 17:09:08",
       "updatedAt": "28/11/2025 17:09:08"
+    },
+    {
+      "id": 18,
+      "description": "Esto es nuevo",
+      "status": "todo",
+      "createdAt": "05/12/2025 04:17:36",
+      "updatedAt": "05/12/2025 04:17:36"
     }
   ]
 }

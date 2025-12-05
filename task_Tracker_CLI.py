@@ -43,6 +43,51 @@ def print_task_table(task: dict) -> None:
     print(border)
 
 
+def print_tasks_table(tasks: list[dict]) -> None:
+    headers = ["Id", "Description", "Status", "Created At", "Updated At"]
+
+    # 1) Convertir todas las tareas a filas de strings
+    rows: list[list[str]] = []
+    for task in tasks:
+        row = [
+            str(task.get("id", "")),
+            str(task.get("description", "")),
+            str(task.get("status", "")),
+            str(task.get("createdAt", "")),
+            str(task.get("updatedAt", "")),
+        ]
+        rows.append(row)
+
+    # 2) Calcular anchos por columna con todas las filas
+    widths = []
+    for col_index in range(len(headers)):
+        max_header = len(headers[col_index])
+        max_cells = max(len(row[col_index]) for row in rows) if rows else 0
+        widths.append(max(max_header, max_cells))
+
+    def make_border() -> str:
+        parts = ["+" + "-" * (w + 2) for w in widths]
+        return "".join(parts) + "+"
+
+    def make_row(values: list[str]) -> str:
+        cells = []
+        for i, value in enumerate(values):
+            text = str(value)
+            cells.append("| " + text.ljust(widths[i]) + " ")
+        return "".join(cells) + "|"
+
+    border = make_border()
+    print(border)
+    print(make_row(headers))
+    print(border)
+
+    # 3) Todas las filas
+    for row in rows:
+        print(make_row(row))
+
+    print(border)
+
+
 def cmd_add(args: argparse.Namespace):
     """Handler para: task-cli add DESCRIPTION"""
 
@@ -67,7 +112,6 @@ def cmd_add(args: argparse.Namespace):
 
 def cmd_update(args: argparse.Namespace):
     """Handler para: task-cli update ID DESCRIPTION"""
-    print("-----------------------------------------")
 
     # 0) Validar que la nueva descripción no esté vacía (ni solo espacios)
     new_description = args.description.strip()
@@ -117,7 +161,6 @@ def cmd_delete(args: argparse.Namespace):
 
 def cmd_mark_in_progress(args: argparse.Namespace):
     """Handler para: task-cli mark-in-progress ID"""
-    print("-----------------------------------------")
 
     # 1) Cargar estado actual de tareas desde el JSON
     data = load_tasks()
@@ -139,7 +182,6 @@ def cmd_mark_in_progress(args: argparse.Namespace):
 
 def cmd_mark_done(args: argparse.Namespace):
     """Handler para: task-cli mark-done ID"""
-    print("-----------------------------------------")
 
     # 1) Cargar estado actual de tareas desde el JSON
     data = load_tasks()
@@ -161,8 +203,23 @@ def cmd_mark_done(args: argparse.Namespace):
 
 def cmd_list(args: argparse.Namespace):
     """Handler para: task-cli list [status]"""
-    print("-----------------------------------------")
-    print("We are list tasks with status:", args.status)
+
+    # 1) Cargar estado actual de tareas desde el JSON
+    data = load_tasks()
+
+    # 2) Pedir al dominio la lista filtrada
+    tasks = list_tasks_by_status(data, args.status)
+
+    # 3) Si no hay tareas, informar y salir
+    if not tasks:
+        if args.status == "all":
+            print("There are no tasks yet.")
+        else:
+            print(f"There are no tasks with status '{args.status}'.")
+        return
+
+    # 4) Mostrar cada tarea como una pequeña tabla
+    print_tasks_table(tasks)
 
 
 # ===== CAPA DE DOMINIO: lógica de tareas / JSON =====
@@ -306,7 +363,15 @@ def list_tasks_by_status(data: dict, status: str) -> list[dict]:
     - Si es 'all', devuelve todas las tareas.
     - Si es otro, devuelve solo las que tienen ese status.
     """
-    pass
+    tasks = data.get("tasks", [])
+
+    if status == "all":
+        # Devolvemos una copia para que el llamador no modifique la lista interna por accidente
+        return list(tasks)
+
+    # Filtramos por el valor de status
+    filtered = [task for task in tasks if task.get("status") == status]
+    return filtered
 
 
 # ===== CAPA CLI: construcción del parser =====
