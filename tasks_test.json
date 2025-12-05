@@ -1,0 +1,26 @@
+{
+  "last_id": 3,
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Task A (todo)",
+      "status": "todo",
+      "createdAt": "05/12/2025 06:40:54",
+      "updatedAt": "05/12/2025 06:40:54"
+    },
+    {
+      "id": 2,
+      "description": "Task B (in-progress)",
+      "status": "in-progress",
+      "createdAt": "05/12/2025 06:40:54",
+      "updatedAt": "05/12/2025 06:40:54"
+    },
+    {
+      "id": 3,
+      "description": "Task C (done)",
+      "status": "done",
+      "createdAt": "05/12/2025 06:40:54",
+      "updatedAt": "05/12/2025 06:40:54"
+    }
+  ]
+}

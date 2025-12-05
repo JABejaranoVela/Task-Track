@@ -101,7 +101,7 @@ def cmd_add(args: argparse.Namespace):
     data = load_tasks()
 
     # 2) Añadir la nueva tarea a esa estructura en memoria
-    new_task = add_task(data, args.description)
+    new_task = add_task(data, description)
 
     # 3) Guardar de nuevo en disco
     save_tasks(data)
