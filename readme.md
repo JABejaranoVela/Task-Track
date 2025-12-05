@@ -38,8 +38,6 @@ source .venv/bin/activate
 # .venv\Scripts\Activate.ps1
 ```
 
-No extra packages are needed.
-
 ---
 
 ## 💻 Usage
@@ -129,43 +127,9 @@ The output is a single table with all matching tasks.
 
 ---
 
-## 🧱 Architecture Overview (short)
-
-Even though everything lives in one file (`task_Tracker_CLI.py`), the code is organized in two logical layers:
-
-### 1. CLI layer (interface)
-
-- Uses `argparse` to define:
-  - Subcommands: `add`, `update`, `delete`, `mark-in-progress`, `mark-done`, `list`
-  - Arguments for each command
-- Handlers:
-  - `cmd_add`, `cmd_update`, `cmd_delete`
-  - `cmd_mark_in_progress`, `cmd_mark_done`, `cmd_list`
-- Responsible for:
-  - Validating user input (for example, non‑empty descriptions)
-  - Loading and saving data via the domain layer
-  - Printing tables with `print_task_table` and `print_tasks_table`
-
-### 2. Domain layer (logic + persistence)
-
-- Constant: `TASKS_FILE = "tasks.json"`
-- Persistence:
-  - `load_tasks()` — reads JSON or returns an empty structure if the file is missing/corrupted
-  - `save_tasks(data)` — writes the full state to JSON
-- Business logic:
-  - `add_task(data, description)`
-  - `update_task(data, task_id, new_description)`
-  - `delete_task(data, task_id)`
-  - `set_task_status(data, task_id, new_status)`
-  - `list_tasks_by_status(data, status)`
-
-The CLI layer never manipulates JSON directly; it always goes through these domain functions.
-
----
-
 ## 🧪 Manual Tests
 
-There is a separate script for manual tests: `manual_tests.py`.
+There is a separate script for manual tests: `tests.py`.
 
 It uses a different JSON file (`tasks_test.json`) so tests do **not** modify your real `tasks.json`.
 
