@@ -1,82 +1,12 @@
 {
-  "last_id": 23,
+  "last_id": 1,
   "tasks": [
     {
-      "id": 5,
-      "description": "Hola a todos",
+      "id": 1,
+      "description": "Buy groceries and cook dinner",
       "status": "todo",
-      "createdAt": "28/11/2025 16:14:07",
-      "updatedAt": "28/11/2025 16:14:07"
-    },
-    {
-      "id": 8,
-      "description": "sadasd",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:19:01",
-      "updatedAt": "28/11/2025 16:19:01"
-    },
-    {
-      "id": 13,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:35:08",
-      "updatedAt": "28/11/2025 16:35:08"
-    },
-    {
-      "id": 14,
-      "description": "sadasd",
-      "status": "todo",
-      "createdAt": "28/11/2025 16:35:11",
-      "updatedAt": "28/11/2025 16:35:11"
-    },
-    {
-      "id": 15,
-      "description": "Hola a todos",
-      "status": "todo",
-      "createdAt": "28/11/2025 17:09:08",
-      "updatedAt": "28/11/2025 17:09:08"
-    },
-    {
-      "id": 18,
-      "description": "Esto es nuevo",
-      "status": "todo",
-      "createdAt": "05/12/2025 04:17:36",
-      "updatedAt": "05/12/2025 04:17:36"
-    },
-    {
-      "id": 19,
-      "description": "Hola 4",
-      "status": "todo",
-      "createdAt": "05/12/2025 04:33:49",
-      "updatedAt": "05/12/2025 04:33:49"
-    },
-    {
-      "id": 20,
-      "description": "TASK DESCRIPTION",
-      "status": "todo",
-      "createdAt": "05/12/2025 08:14:03",
-      "updatedAt": "05/12/2025 08:14:03"
-    },
-    {
-      "id": 21,
-      "description": "NEW DESCRIPTION",
-      "status": "todo",
-      "createdAt": "05/12/2025 08:14:33",
-      "updatedAt": "05/12/2025 08:14:50"
-    },
-    {
-      "id": 22,
-      "description": "Buy groceries",
-      "status": "todo",
-      "createdAt": "05/12/2025 08:38:07",
-      "updatedAt": "05/12/2025 08:38:07"
-    },
-    {
-      "id": 23,
-      "description": "Buy groceries",
-      "status": "todo",
-      "createdAt": "05/12/2025 09:46:52",
-      "updatedAt": "05/12/2025 09:46:52"
+      "createdAt": "07/12/2025 01:48:25",
+      "updatedAt": "07/12/2025 01:48:33"
     }
   ]
 }

@@ -1,0 +1,18 @@
+# entornos virtuales
+.venv/
+venv/
+
+# caches de Python
+__pycache__/
+*.pyc
+
+# build / distribución
+build/
+dist/
+*.egg-info/
+
+# uv / lockfiles
+uv.lock
+
+# otros
+.env
