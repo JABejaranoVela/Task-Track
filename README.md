@@ -2,6 +2,8 @@
 
 ![Task Tracker CLI demo](task-cli-demo.gif)
 
+## 📖 Description
+
 Small command‑line app to track your tasks.  
 Solution for the [Task Tracker](https://roadmap.sh/projects/task-tracker) project.
 
