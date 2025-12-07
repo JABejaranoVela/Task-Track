@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,8 +7,8 @@ name = "task-tracker-cli"
 version = "0.1.0"
 description = "A simple task tracker CLI that stores tasks in a JSON file."
 readme = "README.md"
-requires-python = ">=3.11"
-license = { text = "MIT" }
+requires-python = ">=3.10"
+license = "MIT"
 authors = [
     { name = "Jose Antonio Bejarano Vela", email = "joseantoniobejarano@outlook.es"  },
 ]
@@ -16,6 +16,9 @@ dependencies = []
 
 [project.scripts]
 task-cli = "task_tracker_cli.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
