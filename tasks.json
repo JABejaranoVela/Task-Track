@@ -1,5 +1,5 @@
 {
-  "last_id": 22,
+  "last_id": 23,
   "tasks": [
     {
       "id": 5,
@@ -70,6 +70,13 @@
       "status": "todo",
       "createdAt": "05/12/2025 08:38:07",
       "updatedAt": "05/12/2025 08:38:07"
+    },
+    {
+      "id": 23,
+      "description": "Buy groceries",
+      "status": "todo",
+      "createdAt": "05/12/2025 09:46:52",
+      "updatedAt": "05/12/2025 09:46:52"
     }
   ]
 }
