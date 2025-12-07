@@ -16,3 +16,4 @@ uv.lock
 
 # otros
 .env
+*.tape
