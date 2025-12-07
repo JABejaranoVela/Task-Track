@@ -4,10 +4,10 @@ import os
 from datetime import datetime
 
 
-# ===== CAPA CLI: handlers de comandos / Interfaz =====
+# ===== CLI LAYER: command handlers / Interface =====
 def print_task_table(task: dict) -> None:
     """
-    Imprime una tabla con una sola tarea, con columnas:
+    Print a table with a single task with columns:
     Id | Description | Status | Created At | Updated At
     """
     headers = ["Id", "Description", "Status", "Created At", "Updated At"]
@@ -19,7 +19,7 @@ def print_task_table(task: dict) -> None:
         task["updatedAt"],
     ]
 
-    # Calcular ancho de cada columna (máximo entre cabecera y valor)
+    # Compute column widths (max between header and value)
     widths = [max(len(headers[i]), len(row[i])) for i in range(len(headers))]
 
     def make_border() -> str:
@@ -44,9 +44,12 @@ def print_task_table(task: dict) -> None:
 
 
 def print_tasks_table(tasks: list[dict]) -> None:
+    """
+    Print a table with multiple tasks (one row per task).
+    """
     headers = ["Id", "Description", "Status", "Created At", "Updated At"]
 
-    # 1) Convertir todas las tareas a filas de strings
+    # 1) Convert all tasks into rows of strings
     rows: list[list[str]] = []
     for task in tasks:
         row = [
@@ -58,7 +61,7 @@ def print_tasks_table(tasks: list[dict]) -> None:
         ]
         rows.append(row)
 
-    # 2) Calcular anchos por columna con todas las filas
+    # 2) Compute widths per column considering all rows
     widths = []
     for col_index in range(len(headers)):
         max_header = len(headers[col_index])
@@ -81,7 +84,7 @@ def print_tasks_table(tasks: list[dict]) -> None:
     print(make_row(headers))
     print(border)
 
-    # 3) Todas las filas
+    # 3) Print all rows
     for row in rows:
         print(make_row(row))
 
@@ -89,128 +92,128 @@ def print_tasks_table(tasks: list[dict]) -> None:
 
 
 def cmd_add(args: argparse.Namespace):
-    """Handler para: task-cli add DESCRIPTION"""
+    """Handler for: task-cli add DESCRIPTION"""
 
-    # 0) Validar que la descripción no esté vacía (ni solo espacios)
+    # 0) Validate that the description is not empty (or only spaces)
     description = args.description.strip()
     if not description:
         print("Error: task description cannot be empty.")
         return
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Añadir la nueva tarea a esa estructura en memoria
+    # 2) Add the new task to that in-memory structure
     new_task = add_task(data, description)
 
-    # 3) Guardar de nuevo en disco
+    # 3) Save the updated data to disk
     save_tasks(data)
 
-    # 4) Mostrar tabla con la tarea creada
+    # 4) Print a table with the created task
     print_task_table(new_task)
 
 
 def cmd_update(args: argparse.Namespace):
-    """Handler para: task-cli update ID DESCRIPTION"""
+    """Handler for: task-cli update ID DESCRIPTION"""
 
-    # 0) Validar que la nueva descripción no esté vacía (ni solo espacios)
+    # 0) Validate that the new description is not empty (or only spaces)
     new_description = args.description.strip()
     if not new_description:
         print("Error: task description cannot be empty.")
         return
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Intentar actualizar la tarea en la capa de dominio
+    # 2) Try to update the task in the domain layer
     updated_task = update_task(data, args.id, new_description)
 
     if updated_task is None:
-        # No existe una tarea con ese id
+        # No task found with that id
         print(f"Error: task with ID {args.id} not found.")
         return
 
-    # 3) Guardar cambios en disco
+    # 3) Save changes to disk
     save_tasks(data)
 
-    # 4) Mostrar la tarea actualizada
+    # 4) Print the updated task
     print_task_table(updated_task)
 
 
 def cmd_delete(args: argparse.Namespace):
-    """Handler para: task-cli delete ID"""
+    """Handler for: task-cli delete ID"""
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Intentar eliminar la tarea en la capa de dominio
+    # 2) Try to delete the task in the domain layer
     deleted_task = delete_task(data, args.id)
 
     if deleted_task is None:
-        # No existe una tarea con ese id
+        # No task found with that id
         print(f"Error: task with ID {args.id} not found.")
         return
 
-    # 3) Guardar cambios en disco
+    # 3) Save changes to disk
     save_tasks(data)
 
-    # 4) Mostrar la tarea eliminada (aunque ya no esté en el archivo)
+    # 4) Show the deleted task (even though it is no longer in the file)
     print("Task deleted:")
     print_task_table(deleted_task)
 
 
 def cmd_mark_in_progress(args: argparse.Namespace):
-    """Handler para: task-cli mark-in-progress ID"""
+    """Handler for: task-cli mark-in-progress ID"""
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Intentar cambiar el estado en la capa de dominio
+    # 2) Try to change status in the domain layer
     updated_task = set_task_status(data, args.id, "in-progress")
 
     if updated_task is None:
-        # No existe una tarea con ese id
+        # No task found with that id
         print(f"Error: task with ID {args.id} not found.")
         return
 
-    # 3) Guardar cambios en disco
+    # 3) Save changes to disk
     save_tasks(data)
 
-    # 4) Mostrar la tarea actualizada
+    # 4) Print the updated task
     print_task_table(updated_task)
 
 
 def cmd_mark_done(args: argparse.Namespace):
-    """Handler para: task-cli mark-done ID"""
+    """Handler for: task-cli mark-done ID"""
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Intentar cambiar el estado en la capa de dominio
+    # 2) Try to change status in the domain layer
     updated_task = set_task_status(data, args.id, "done")
 
     if updated_task is None:
-        # No existe una tarea con ese id
+        # No task found with that id
         print(f"Error: task with ID {args.id} not found.")
         return
 
-    # 3) Guardar cambios en disco
+    # 3) Save changes to disk
     save_tasks(data)
 
-    # 4) Mostrar la tarea actualizada
+    # 4) Print the updated task
     print_task_table(updated_task)
 
 
 def cmd_list(args: argparse.Namespace):
-    """Handler para: task-cli list [status]"""
+    """Handler for: task-cli list [status]"""
 
-    # 1) Cargar estado actual de tareas desde el JSON
+    # 1) Load current tasks state from JSON
     data = load_tasks()
 
-    # 2) Pedir al dominio la lista filtrada
+    # 2) Ask the domain layer for the filtered list
     tasks = list_tasks_by_status(data, args.status)
 
-    # 3) Si no hay tareas, informar y salir
+    # 3) If there are no tasks, inform the user and exit
     if not tasks:
         if args.status == "all":
             print("There are no tasks yet.")
@@ -218,35 +221,34 @@ def cmd_list(args: argparse.Namespace):
             print(f"There are no tasks with status '{args.status}'.")
         return
 
-    # 4) Mostrar cada tarea como una pequeña tabla
+    # 4) Print all tasks in a single table
     print_tasks_table(tasks)
 
 
-# ===== CAPA DE DOMINIO: lógica de tareas / JSON =====
+# ===== DOMAIN LAYER: task logic / JSON =====
 TASKS_FILE = "tasks.json"
 
 
 def load_tasks() -> dict:
     """
-    Carga las tareas desde el archivo JSON.
-    - Si el archivo no existe, devuelve una estructura vacía: {"last_id": 0, "tasks": []}
-    - Más adelante implementaremos aquí la lectura de JSON.
+    Load tasks from the JSON file.
+    - If the file does not exist, return an empty structure: {"last_id": 0, "tasks": []}
     """
-    # 1) Comprobar si existe el archivo
+    # 1) Check if the file exists
     if not os.path.exists(TASKS_FILE):
-        # Estructura inicial estándar de nuestro programa
+        # Initial standard structure of our program
         return {"last_id": 0, "tasks": []}
 
-    # 2) Si existe, intentamos leerlo como JSON
+    # 2) If it exists, try to read it as JSON
     try:
         with open(TASKS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
     except json.JSONDecodeError:
-        # Archivo corrupto o con formato no válido
-        # Decisión: en lugar de petar el programa, devolvemos estructura vacía
+        # File is corrupted or not valid JSON
+        # Decision: instead of crashing, return an empty structure
         return {"last_id": 0, "tasks": []}
 
-    # 3) Normalizar mínimos por si faltan claves
+    # 3) Normalize minimum keys in case something is missing
     if "last_id" not in data:
         data["last_id"] = 0
     if "tasks" not in data:
@@ -257,9 +259,8 @@ def load_tasks() -> dict:
 
 def save_tasks(data: dict) -> None:
     """
-    Guarda en disco la estructura 'data' (last_id + tasks) en TASKS_FILE.
-    - Sobrescribe el contenido anterior del archivo.
-    - Usa json.dump cuando lo implementemos.
+    Save the 'data' structure (last_id + tasks) to TASKS_FILE.
+    - Overwrites the previous contents of the file.
     """
     with open(TASKS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -267,13 +268,13 @@ def save_tasks(data: dict) -> None:
 
 def add_task(data: dict, description: str) -> dict:
     """
-    Añade una nueva tarea a 'data' con la descripción dada.
-    - Calcula un nuevo id (usando data['last_id'] + 1, por ejemplo).
-    - Crea la tarea con campos: id, description, status='todo', createdAt y updatedAt (timestamps).
-    - Actualiza data['last_id'] y añade la tarea a data['tasks'].
-    - Devuelve la tarea creada (dict).
+    Add a new task to 'data' with the given description.
+    - Compute a new id (using data['last_id'] + 1, for example).
+    - Create the task with fields: id, description, status='todo', createdAt, updatedAt.
+    - Update data['last_id'] and append the task to data['tasks'].
+    - Return the created task (dict).
     """
-    # Por si acaso: asegurar estructura mínima
+    # Just in case: ensure minimal structure
     last_id = data.get("last_id", 0)
     tasks = data.get("tasks", [])
 
@@ -290,7 +291,7 @@ def add_task(data: dict, description: str) -> dict:
 
     tasks.append(task)
 
-    # Guardar de vuelta en el dict original
+    # Save back into the original dict
     data["last_id"] = new_id
     data["tasks"] = tasks
 
@@ -299,11 +300,11 @@ def add_task(data: dict, description: str) -> dict:
 
 def update_task(data: dict, task_id: int, new_description: str) -> dict | None:
     """
-    Actualiza la descripción de la tarea con id == task_id.
-    - Busca la tarea en data['tasks'].
-    - Si la encuentra, cambia su description y updatedAt.
-    - Devuelve la tarea actualizada (dict) si existe.
-    - Devuelve None si no se encontró ninguna tarea con ese id.
+    Update the description of the task with id == task_id.
+    - Search the task in data['tasks'].
+    - If found, change its description and updatedAt.
+    - Return the updated task (dict) if it exists.
+    - Return None if no task with that id is found.
     """
     tasks = data.get("tasks", [])
 
@@ -313,36 +314,36 @@ def update_task(data: dict, task_id: int, new_description: str) -> dict | None:
             task["updatedAt"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             return task
 
-    # No se ha encontrado ninguna tarea con ese id
+    # No task found with that id
     return None
 
 
 def delete_task(data: dict, task_id: int) -> dict | None:
     """
-    Elimina la tarea con id == task_id de data['tasks'].
-    - Si la encuentra y la elimina, devuelve la tarea eliminada (dict).
-    - Si no existe ninguna tarea con ese id, devuelve None.
+    Delete the task with id == task_id from data['tasks'].
+    - If found and deleted, return the deleted task (dict).
+    - If no task with that id exists, return None.
     """
     tasks = data.get("tasks", [])
 
     for index, task in enumerate(tasks):
         if task.get("id") == task_id:
-            # Guardamos la tarea que vamos a eliminar
+            # Store the task that we are going to delete
             deleted_task = tasks.pop(index)
-            # Por claridad, reasignamos la lista a data (aunque es la misma referencia)
+            # For clarity, reassign the list to data (same reference, but explicit)
             data["tasks"] = tasks
             return deleted_task
 
-    # No se ha encontrado ninguna tarea con ese id
+    # No task found with that id
     return None
 
 
 def set_task_status(data: dict, task_id: int, new_status: str) -> dict | None:
     """
-    Cambia el status de la tarea con id == task_id.
-    - new_status será 'todo', 'in-progress' o 'done'.
-    - Si la tarea existe, actualiza su status y updatedAt y devuelve la tarea (dict).
-    - Si no existe, devuelve None.
+    Change the status of the task with id == task_id.
+    - new_status will be 'todo', 'in-progress' or 'done'.
+    - If the task exists, update its status and updatedAt and return the task (dict).
+    - If no task with that id exists, return None.
     """
     tasks = data.get("tasks", [])
 
@@ -352,55 +353,55 @@ def set_task_status(data: dict, task_id: int, new_status: str) -> dict | None:
             task["updatedAt"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             return task
 
-    # No se ha encontrado ninguna tarea con ese id
+    # No task found with that id
     return None
 
 
 def list_tasks_by_status(data: dict, status: str) -> list[dict]:
     """
-    Devuelve una lista de tareas filtradas por status.
-    - status puede ser: 'todo', 'in-progress', 'done' o 'all'.
-    - Si es 'all', devuelve todas las tareas.
-    - Si es otro, devuelve solo las que tienen ese status.
+    Return a list of tasks filtered by status.
+    - status can be: 'todo', 'in-progress', 'done' or 'all'.
+    - If 'all', return all tasks.
+    - Otherwise, return only tasks with that status.
     """
     tasks = data.get("tasks", [])
 
     if status == "all":
-        # Devolvemos una copia para que el llamador no modifique la lista interna por accidente
+        # Return a copy so callers don’t accidentally modify the internal list
         return list(tasks)
 
-    # Filtramos por el valor de status
+    # Filter by status value
     filtered = [task for task in tasks if task.get("status") == status]
     return filtered
 
 
-# ===== CAPA CLI: construcción del parser =====
+# ===== CLI LAYER: parser construction =====
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="task-cli",
         description="A CLI application to efficiently manage your tasks",
     )
 
-    # GRUPO DE SUBCOMANDOS (add, update, delete, etc.)
+    # GROUP OF SUBCOMMANDS (add, update, delete, etc.)
     subparsers = parser.add_subparsers(
-        dest="command",  # aquí se guardará el nombre del subcomando usado
-        required=True,  # obliga a poner un comando (add, update, ...)
+        dest="command",  # name of the chosen subcommand will be stored here
+        required=True,  # force user to provide a subcommand (add, update, ...)
     )
 
     # ---------- task-cli add "Buy groceries" ----------
-    # subcomando: add, subparser = qué comando se ha elegido
+    # subcommand: add
     add_parser = subparsers.add_parser(
         "add",  # task-cli add ...
         help="Add a new task",
     )
 
-    # argumento posicional de 'add': la descripción, add_argument = qué datos recibe ese comando
+    # positional argument of 'add': the description
     add_parser.add_argument(
         "description",  # args.description
-        type=str,  # será un string
-        help="Task description",  # ayuda de este argumento
+        type=str,
+        help="Task description",
     )
-    # aquí asociamos el subcomando 'add' con su handler cmd_add
+    # associate this subcommand with its handler cmd_add
     add_parser.set_defaults(func=cmd_add)
 
     # ---------- task-cli update 1 "New description" ----------
@@ -459,14 +460,14 @@ def build_parser() -> argparse.ArgumentParser:
     md_parser.set_defaults(func=cmd_mark_done)
 
     # ---------- task-cli list [status] ----------
-    # status opcional: todo | in-progress | done (o all si no se pasa)
+    # optional status: todo | in-progress | done | all (default)
     list_parser = subparsers.add_parser(
         "list",
-        help="List all tasks, optionally filtered by status(todo, in-progress, done, all)",
+        help="List all tasks, optionally filtered by status (todo, in-progress, done, all)",
     )
     list_parser.add_argument(
         "status",
-        nargs="?",  # opcional
+        nargs="?",  # optional
         choices=["todo", "in-progress", "done", "all"],
         default="all",
         help="Filter tasks by status (todo, in-progress, done, all)",
@@ -480,7 +481,7 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
 
-    # args.func viene del set_defaults() del subcomando correspondiente
+    # args.func comes from the set_defaults() of the selected subcommand
     args.func(args)
 
 
