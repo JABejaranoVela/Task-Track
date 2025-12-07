@@ -1,3 +1,4 @@
+![Task Tracker CLI demo](task-cli-demo.gif)
 
 # Task Tracker CLI
 
