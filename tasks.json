@@ -1,5 +1,5 @@
 {
-  "last_id": 1,
+  "last_id": 2,
   "tasks": [
     {
       "id": 1,
@@ -7,6 +7,13 @@
       "status": "todo",
       "createdAt": "07/12/2025 01:48:25",
       "updatedAt": "07/12/2025 01:48:33"
+    },
+    {
+      "id": 2,
+      "description": "Buy apples",
+      "status": "todo",
+      "createdAt": "07/12/2025 01:54:01",
+      "updatedAt": "07/12/2025 01:54:01"
     }
   ]
 }

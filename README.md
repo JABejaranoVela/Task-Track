@@ -31,11 +31,27 @@ cd task-tracker-cli
 (Optional) create and activate a virtualenv:
 
 ```bash
+# 1. Crear y activar entorno
 python -m venv .venv
-# Linux / macOS
-source .venv/bin/activate
-# Windows (PowerShell)
-# .venv\Scripts\Activate.ps1
+source .venv/bin/activate  # Linux/macOS
+# .venv\Scripts\activate   # Windows
+
+# 2. Instalar en modo editable
+pip install -e .
+
+# 3. Usar la CLI
+task-cli add "Buy groceries"
+task-cli update 1 "New description"
+task-cli delete 1
+task-cli mark-in-progress 2
+task-cli mark-done 2
+task-cli list
+task-cli list todo
+task-cli list in-progress
+task-cli list done
+
+# 4. Ejecutar tests manuales
+python tests/manual_tests.py
 ```
 
 ---
